@@ -5,3 +5,5 @@ pywin32
 pillow
 pystray
 requests
+anthropic
+python-dotenv

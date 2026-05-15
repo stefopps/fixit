@@ -1,10 +1,17 @@
 """
-smoke_test.py — Run this before using FixIt to confirm everything works.
-No GUI, no hotkeys. Pure logic test.
+smoke_test.py — Run this before using Flow. All 7 must pass.
+python smoke_test.py
 """
 
 import sys
 import time
+
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
 
 def test(name, fn):
     print(f"  {name}... ", end="", flush=True)
@@ -17,22 +24,22 @@ def test(name, fn):
         return False
 
 print()
-print("=" * 50)
-print("  FixIt v2 — Smoke Test")
-print("=" * 50)
+print("=" * 55)
+print("  Flow — Smoke Test")
+print("=" * 55)
+print()
 
 from corrector import check_ollama, warmup_model, correct_text
+from memory import stats
 
 results = []
 
-# 1. Ollama reachable
 def t1():
     ok, msg = check_ollama()
     if not ok: raise Exception(msg)
     return msg
-results.append(test("1. Ollama check", t1))
+results.append(test("1. Ollama reachable", t1))
 
-# 2. Model warmup
 def t2():
     t = time.time()
     ok = warmup_model()
@@ -40,51 +47,65 @@ def t2():
     return f"{time.time()-t:.1f}s"
 results.append(test("2. Model warmup", t2))
 
-# 3. Basic typo fix
 def t3():
     t = time.time()
     raw = "helo wrld"
-    fixed = correct_text(raw)
-    elapsed = time.time() - t
-    if not fixed or fixed == raw:
-        raise Exception(f"No correction: '{fixed}'")
-    return f"'{raw}' → '{fixed}'  ({elapsed:.1f}s)"
-results.append(test("3. Basic fix", t3))
+    fixed = correct_text(raw, hwnd=999)
+    if not fixed or fixed.lower().strip() == raw.lower().strip():
+        raise Exception(f"No correction: got '{fixed}'")
+    return f"'{raw}' -> '{fixed}'  ({time.time()-t:.1f}s)"
+results.append(test("3. Basic typo fix", t3))
 
-# 4. Fast-typing style (your actual input)
 def t4():
-    raw = "i wsa tryign to tpye thsi bu tmy fingres are fsat"
-    fixed = correct_text(raw)
+    raw = "she go to the hosptial yestrday for a brokn arm"
+    fixed = correct_text(raw, hwnd=998)
     if not fixed or fixed == raw:
-        raise Exception(f"No correction: '{fixed}'")
-    return f"'{fixed[:50]}'"
-results.append(test("4. Fast-typing fix", t4))
+        raise Exception(f"No change: '{fixed}'")
+    fl = fixed.lower()
+    for bad in ("hosptial", "yestrday", "brokn"):
+        if bad in fl:
+            raise Exception(f"Spelling should be fixed (use key 8 for grammar): '{fixed}'")
+    return f"'{fixed[:55]}'"
+results.append(test("4. Spelling fix (grammar via key 8)", t4))
 
-# 5. No elaboration guard
 def t5():
-    from corrector import SYSTEM_PROMPT
-    if "do NOT rephrase" not in SYSTEM_PROMPT.upper() and "not rephrase" not in SYSTEM_PROMPT.lower():
-        raise Exception("Elaboration guard missing from prompt")
-    return "prompt has anti-elaboration rules"
-results.append(test("5. Anti-elaboration guard", t5))
+    from corrector import update_buffer
+    update_buffer(777, "Hello world", "")
+    raw2 = "Hello world thsi is nw"
+    fixed = correct_text(raw2, hwnd=777)
+    fl = fixed.lower()
+    if "hello" not in fl:
+        raise Exception(f"Opening mangled or dropped: '{fixed}'")
+    if "this" not in fl:
+        raise Exception(f"Incremental tail not corrected: '{fixed}'")
+    if "thsi" in fl or " nw" in fl:
+        raise Exception(f"Typos remain: '{fixed}'")
+    return f"Buffer-ish preserved: '{fixed[:50]}'"
+results.append(test("5. Incremental buffer", t5))
 
-# 6. Clipboard not broken
 def t6():
     import pyperclip
-    pyperclip.copy("test_value_xyz")
+    pyperclip.copy("test_sentinel_xyz")
     val = pyperclip.paste()
-    if val != "test_value_xyz":
-        raise Exception("Clipboard read/write broken")
-    return "clipboard OK"
-results.append(test("6. Clipboard r/w", t6))
+    if val != "test_sentinel_xyz":
+        raise Exception("Clipboard broken")
+    return "OK"
+results.append(test("6. Clipboard read/write", t6))
+
+def t7():
+    s = stats()
+    return (f"dict:{s['dictionary']} "
+            f"abbrevs:{s['abbreviations']} "
+            f"patterns:{s['patterns']}")
+results.append(test("7. Memory store", t7))
 
 print()
 passed = sum(results)
 total  = len(results)
 print(f"  Result: {passed}/{total} passed")
 if passed == total:
-    print("  ✓ All good — FixIt should work.")
+    print("  OK All good — run: python main.py (as Administrator)")
 else:
-    print("  ✗ Fix the failures above before running FixIt.")
-print("=" * 50)
+    print("  FAIL Fix failures above before running Flow.")
+print("=" * 55)
 print()
