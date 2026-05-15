@@ -12,7 +12,7 @@ Format: **date → what changed → why** (one idea per bullet when possible).
 
 ### Source of truth / backup
 
-- **GitHub** is the canonical backup for the code (not a duplicate folder in the repo). Tag or branch when you want a known-good snapshot, e.g. `git tag baseline-2026-05-15`.
+- **GitHub** is the canonical backup for the code (not a duplicate folder in the repo). Repo: https://github.com/stefopps/fixit — tag `baseline-2026-05-15` marks the initial pushed baseline.
 
 ---
 
