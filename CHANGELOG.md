@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to FixIt in this folder are listed here. Use this when you want a **small, reversible step** or to tell an AI what to roll back.
+All notable changes to FixBase (in this folder) are listed here. Use this when you want a **small, reversible step** or to tell an AI what to roll back.
 
 Format: **date → what changed → why** (one idea per bullet when possible).
 
@@ -8,7 +8,11 @@ Format: **date → what changed → why** (one idea per bullet when possible).
 
 ## [Unreleased]
 
-- (Add entries below as you go; keep each bullet one logical change.)
+- **Renamed stable build to FixBase** (window title, UI label, `FindWindowW("FixBase")`, log prefix `[FixBase]`, class `FixBasePanel`).
+
+## FixBase (2026-05-15 restore)
+
+- Restored from GitHub / zip baseline; hotkey **Ctrl+7**; smoke test 6/6.
 
 ### Source of truth / backup
 
@@ -20,7 +24,7 @@ Format: **date → what changed → why** (one idea per bullet when possible).
 
 ### Current behavior (as of last update)
 
-- **Hotkey:** `Ctrl+7` (via `keyboard.add_hotkey("ctrl+7", …)`).
+- **Hotkey:** `7` (single key via `keyboard.add_hotkey("7", …)`).
 - **Window:** FixIt panel is **not** always-on-top (`-topmost` removed) to reduce focus stealing during capture.
 - **Target window on hotkey:** Uses **`LAST_TARGET_HND`** only — the last foreground window that was not the FixIt panel — so the hook does not rely on `GetForegroundWindow()` at hotkey time.
 - **Panel detection:** `_store_hwnd` uses **`FindWindowW(None, "FixIt v2")`** so the tracker skips the FixIt window reliably.
@@ -29,7 +33,7 @@ Format: **date → what changed → why** (one idea per bullet when possible).
 
 ### Earlier experiments (removed or superseded — restore from git/message history if needed)
 
-- **Bare `7` hotkey:** Tried global digit key; interfered with typing; superseded by `Ctrl+7`.
+- **`7` hotkey:** Interferes with typing the digit; use when you rarely need literal `7` in text while FixIt runs, or use FIX NOW instead. Superseded earlier by `Ctrl+7` in some builds; current build uses bare `7` again by request.
 - **UI previews:** Dedicated “Captured / Corrected” text areas + larger window — removed when reverting to the slimmer Control+7 baseline.
 - **Richer capture:** `GetGUIThreadInfo` + focused control + line-then–`Ctrl+A` field fallback — removed in favor of the simpler line-only flow in current `main.py`.
 

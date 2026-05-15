@@ -1,8 +1,25 @@
 @echo off
-REM Closes old FixIt copies, starts exactly one (as Admin)
-echo Closing any old FixIt instances...
-powershell -NoProfile -Command "Get-CimInstance Win32_Process -Filter \"Name='python.exe'\" | Where-Object { $_.CommandLine -like '*fixit*main.py*' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }"
-timeout /t 1 /nobreak >nul
-echo Starting FixIt...
+setlocal EnableExtensions
+title FixIt
+REM One instance + Administrator: fix global hotkeys and avoid duplicate panels.
+
 cd /d "%~dp0"
-powershell -Command "Start-Process python -ArgumentList 'main.py' -WorkingDirectory '%cd%' -Verb RunAs"
+
+net session >nul 2>&1
+if errorlevel 1 (
+  echo FixIt needs Administrator for hotkeys keyboard hook.
+  echo Requesting UAC...
+  powershell -NoProfile -ExecutionPolicy Bypass -Command "Start-Process -FilePath '%~f0' -WorkingDirectory '%~dp0.' -Verb RunAs"
+  exit /b 0
+)
+
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0FIXIT_ONCE.ps1"
+if errorlevel 1 (
+  echo.
+  pause
+  exit /b 1
+)
+
+echo Done. FixIt should be open — you can minimize this window.
+timeout /t 4 >nul
+exit /b 0

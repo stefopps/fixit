@@ -1,8 +1,6 @@
 ﻿"""
-Flow — Pipeline AI corrector.
-Keystroke buffer → auto-chunks every ~20 chars (at last space before limit) → model (background).
-Press 7: typo pipeline commit. Press 8: grammar pass on buffer (handled in hook, not add_hotkey).
-Run as Administrator.
+Flow — Thought-to-text correction (run as Administrator).
+Hotkeys: 7 spelling · 8 grammar · 9 editorial (F9 benchmark — advanced).
 """
 
 import time
@@ -31,7 +29,6 @@ from corrector import (
     clear_buffer,
     grammar_correct,
     set_model,
-    set_modes,
     set_cloud,
 )
 import corrector
@@ -41,6 +38,8 @@ from memory import stats as memory_stats
 CHUNK_SIZE = 20  # dispatch when buffer reaches this length; cuts at prior space (_maybe_chunk)
 TRIGGER_KEY = "7"
 GRAMMAR_KEY = "8"
+BENCHMARK_KEY = "f9"
+EDITORIAL_KEY = "9"
 
 # ── Global state ───────────────────────────────────────────────────────────────
 BUSY = False
@@ -53,6 +52,8 @@ _key_buffer: list[str] = []
 _buffer_lock = threading.Lock()
 _live_cb = None
 _grammar_cb = None
+_editorial_cb = None
+_benchmark_panel_ref = None  # FlowPanel instance — benchmark picker UI
 
 # ── Pipeline queue ─────────────────────────────────────────────────────────────
 _pipeline: deque = deque()
@@ -189,6 +190,235 @@ def _grammar_fix_dispatch():
         BUSY = False
 
 
+def _benchmark_paste_full_field(hwnd: int, fixed: str):
+    """Replace entire focused field with fixed text (Ctrl+A, paste)."""
+    force_focus(hwnd)
+    try:
+        saved = pyperclip.paste()
+    except Exception:
+        saved = ""
+
+    pyperclip.copy(fixed)
+    time.sleep(0.04)
+    keyboard.send("ctrl+a")
+    time.sleep(0.04)
+    keyboard.send("ctrl+v")
+    time.sleep(0.06)
+
+    def _restore():
+        time.sleep(0.8)
+        try:
+            pyperclip.copy(saved)
+        except Exception:
+            pass
+
+    threading.Thread(target=_restore, daemon=True).start()
+
+
+def _benchmark_dispatch():
+    """Key 9 — parallel qwen 1.5b vs 7b on field text; pick winner in UI."""
+    global BUSY
+
+    hwnd = (_hwnd_ref[0] or None) or (LAST_TARGET_HND or None)
+    panel = _benchmark_panel_ref
+
+    if not hwnd:
+        if _grammar_cb:
+            _grammar_cb("✗ Benchmark: no target window — click in a field first.")
+        return
+
+    if BUSY:
+        if _grammar_cb:
+            _grammar_cb("Still working — wait.")
+        return
+
+    BUSY = True
+    saved = ""
+    try:
+        force_focus(hwnd)
+        time.sleep(0.05)
+
+        try:
+            saved = pyperclip.paste()
+        except Exception:
+            saved = ""
+
+        pyperclip.copy("~~FLOW_BENCHMARK~~")
+        time.sleep(0.04)
+        keyboard.send("ctrl+a")
+        time.sleep(0.05)
+        keyboard.send("ctrl+c")
+        time.sleep(0.18)
+
+        try:
+            raw = pyperclip.paste()
+        except Exception:
+            raw = ""
+
+        if not raw or raw == "~~FLOW_BENCHMARK~~" or not raw.strip():
+            try:
+                pyperclip.copy(saved)
+            except Exception:
+                pass
+            if _grammar_cb:
+                _grammar_cb("✗ Benchmark: could not read field.")
+            return
+
+        if _grammar_cb:
+            _grammar_cb(f"Benchmark running… ({len(raw)} chars)")
+
+        results: dict = {}
+        pending = [2]
+        done = threading.Event()
+
+        def run_fast():
+            try:
+                t = time.time()
+                from corrector import BASE_SYSTEM_PROMPT, MODEL_LOW, _call_ollama
+
+                results["ollama"] = _call_ollama(
+                    raw, BASE_SYSTEM_PROMPT, force_model=MODEL_LOW
+                )
+                results["ollama_ms"] = int((time.time() - t) * 1000)
+            finally:
+                pending[0] -= 1
+                if pending[0] == 0:
+                    done.set()
+
+        def run_high():
+            try:
+                t = time.time()
+                from corrector import BASE_SYSTEM_PROMPT, MODEL_HIGH, _call_ollama
+
+                results["claude"] = _call_ollama(
+                    raw, BASE_SYSTEM_PROMPT, force_model=MODEL_HIGH
+                )
+                results["claude_ms"] = int((time.time() - t) * 1000)
+            finally:
+                pending[0] -= 1
+                if pending[0] == 0:
+                    done.set()
+
+        threading.Thread(target=run_fast, daemon=True).start()
+        threading.Thread(target=run_high, daemon=True).start()
+
+        done.wait(timeout=180)
+
+        try:
+            pyperclip.copy(saved)
+        except Exception:
+            pass
+
+        if panel:
+            panel.root.after(
+                0, lambda: panel._show_benchmark_dialog(hwnd, raw, results)
+            )
+        elif _grammar_cb:
+            _grammar_cb("✗ Benchmark: panel not ready.")
+    except Exception as e:
+        if _grammar_cb:
+            _grammar_cb(f"✗ Benchmark error: {e}")
+        try:
+            pyperclip.copy(saved)
+        except Exception:
+            pass
+        import traceback
+
+        traceback.print_exc()
+    finally:
+        BUSY = False
+
+
+def _benchmark_hotkey():
+    threading.Thread(target=_benchmark_dispatch, daemon=True).start()
+
+
+def _editorial_hotkey():
+    threading.Thread(target=_editorial_dispatch, daemon=True).start()
+
+
+def _editorial_dispatch():
+    """Key 9 — interpretive editorial pass; reconstructed prose in popup."""
+    global BUSY, MODEL_LOADED
+
+    hwnd = (_hwnd_ref[0] or None) or (LAST_TARGET_HND or None)
+    if not hwnd:
+        if _grammar_cb:
+            _grammar_cb("✗ Editorial: no target window — click in a field first.")
+        return
+
+    if BUSY:
+        if _grammar_cb:
+            _grammar_cb("Still working — wait.")
+        return
+
+    BUSY = True
+    saved = ""
+    try:
+        force_focus(hwnd)
+        time.sleep(0.05)
+
+        try:
+            saved = pyperclip.paste()
+        except Exception:
+            saved = ""
+
+        pyperclip.copy("~~FLOW_EDITORIAL~~")
+        time.sleep(0.04)
+        keyboard.send("ctrl+a")
+        time.sleep(0.05)
+        keyboard.send("ctrl+c")
+        time.sleep(0.18)
+
+        try:
+            raw = pyperclip.paste()
+        except Exception:
+            raw = ""
+
+        try:
+            pyperclip.copy(saved)
+        except Exception:
+            pass
+
+        if not raw or raw == "~~FLOW_EDITORIAL~~" or not raw.strip():
+            if _grammar_cb:
+                _grammar_cb("✗ Editorial: could not read field.")
+            return
+
+        if not MODEL_LOADED:
+            if corrector._USE_CLOUD:
+                MODEL_LOADED = True
+            else:
+                if _grammar_cb:
+                    _grammar_cb("→ Loading model (editorial)...")
+                ok = warmup_model()
+                MODEL_LOADED = ok
+                if not ok:
+                    if _grammar_cb:
+                        _grammar_cb("✗ Ollama not ready.")
+                    return
+
+        from corrector import EDITORIAL_PROMPT, _call_ollama
+
+        out = _call_ollama(raw, system_prompt=EDITORIAL_PROMPT)
+        if out:
+            out = out.strip().split("\n\n")[0].strip()
+
+        msg = out if out else "(no response)"
+        if _editorial_cb:
+            _editorial_cb(hwnd, raw, msg)
+        elif _grammar_cb:
+            _grammar_cb(f"Editorial: {msg[:120]}")
+    except Exception as e:
+        if _grammar_cb:
+            _grammar_cb(f"✗ Editorial error: {e}")
+        import traceback
+
+        traceback.print_exc()
+    finally:
+        BUSY = False
+
+
 def _on_key_event(event):
     global _key_buffer, _live_cb
     if event.event_type != "down":
@@ -205,6 +435,11 @@ def _on_key_event(event):
         return
     if name == GRAMMAR_KEY:
         threading.Thread(target=_grammar_fix_dispatch, daemon=True).start()
+        return
+    # Editorial (9) & benchmark (F9) use add_hotkey — skip buffering only.
+    if name == EDITORIAL_KEY:
+        return
+    if name == BENCHMARK_KEY:
         return
 
     with _buffer_lock:
@@ -341,8 +576,8 @@ def force_focus(hwnd: int):
 
 
 def replace_text(hwnd: int, raw: str, fixed: str):
-    """Delete current line from caret back (Shift+Home), paste fixed. Clipboard restored."""
-    _ = raw  # API parity; assumes caret at end of the corrected chunk on this line.
+    """Full-field replace via Ctrl+A → Ctrl+V; clipboard restored only if unchanged."""
+    _ = raw  # API parity for callers
     force_focus(hwnd)
     time.sleep(0.05)
 
@@ -354,18 +589,17 @@ def replace_text(hwnd: int, raw: str, fixed: str):
     pyperclip.copy(fixed)
     time.sleep(0.04)
 
-    keyboard.send("shift+home")
-    time.sleep(0.03)
-    keyboard.send("delete")
+    keyboard.send("ctrl+a")
     time.sleep(0.04)
-
     keyboard.send("ctrl+v")
     time.sleep(0.06)
 
     def _restore():
-        time.sleep(0.8)
+        time.sleep(0.4)
         try:
-            pyperclip.copy(saved)
+            current = pyperclip.paste()
+            if current == fixed:
+                pyperclip.copy(saved)
         except Exception:
             pass
 
@@ -421,6 +655,9 @@ def do_fix(hwnd: int, log_fn):
 
 class FlowPanel:
     def __init__(self):
+        global _benchmark_panel_ref
+        _benchmark_panel_ref = self
+
         self.root = tk.Tk()
         self.root.title("Flow")
         self.root.geometry("400x500")
@@ -438,13 +675,14 @@ class FlowPanel:
         ).pack(pady=(12, 0))
 
         top_row = tk.Frame(self.root, bg="#0a0a0a")
-        top_row.pack(fill="x", padx=12, pady=(2, 0))
+        top_row.pack(fill="x", padx=12, pady=(4, 0))
         tk.Label(
             top_row,
-            text="7 = typo pipeline  |  8 = grammar (buffer)",
+            text="7 · 8 · 9",
             bg="#0a0a0a",
             fg="#2a2a2a",
-            font=("Consolas", 8),
+            font=("Consolas", 9),
+            anchor="w",
         ).pack(side="left")
 
         self._pinned = False
@@ -599,55 +837,46 @@ class FlowPanel:
         )
         self.model_btn.pack(padx=12, pady=(0, 4), fill="x")
 
-        # ── Mode toggles ──────────────────────────────────────────────────────
-        modes_frame = tk.Frame(self.root, bg="#0a0a0a")
-        modes_frame.pack(padx=12, pady=(0, 6), fill="x")
+        # ── Modes: S / G / E (keys 7 / 8 / 9 editorial) ────────────────────────
+        mode_row = tk.Frame(self.root, bg="#0a0a0a")
+        mode_row.pack(padx=12, pady=(0, 6), fill="x")
 
-        self._mode_spelling = True
-        self._mode_semantic = False
-        self._mode_grammar = False
-
-        self.btn_spelling = tk.Button(
-            modes_frame,
-            text="✓ Spelling",
-            command=lambda: self._toggle_mode("spelling"),
+        tk.Button(
+            mode_row,
+            text="S",
+            command=lambda: None,
             bg="#0f2a1a",
             fg="#22c55e",
-            font=("Consolas", 8),
+            font=("Consolas", 9, "bold"),
             relief="flat",
             cursor="hand2",
-            pady=3,
-            padx=8,
-        )
-        self.btn_spelling.pack(side="left", expand=True, fill="x", padx=(0, 2))
+            pady=5,
+        ).pack(side="left", expand=True, fill="x", padx=(0, 2))
 
-        self.btn_semantic = tk.Button(
-            modes_frame,
-            text="○ Semantic",
-            command=lambda: self._toggle_mode("semantic"),
-            bg="#1a1a1a",
-            fg="#555555",
-            font=("Consolas", 8),
+        tk.Button(
+            mode_row,
+            text="G",
+            command=lambda: None,
+            bg="#1a1a0a",
+            fg="#f97316",
+            font=("Consolas", 9, "bold"),
             relief="flat",
             cursor="hand2",
-            pady=3,
-            padx=8,
-        )
-        self.btn_semantic.pack(side="left", expand=True, fill="x", padx=2)
+            pady=5,
+        ).pack(side="left", expand=True, fill="x", padx=2)
 
-        self.btn_grammar = tk.Button(
-            modes_frame,
-            text="○ Grammar",
-            command=lambda: self._toggle_mode("grammar"),
-            bg="#1a1a1a",
-            fg="#555555",
-            font=("Consolas", 8),
+        self.edit_btn = tk.Button(
+            mode_row,
+            text="E",
+            command=self._on_editorial,
+            bg="#1a1a2a",
+            fg="#818cf8",
+            font=("Consolas", 9, "bold"),
             relief="flat",
             cursor="hand2",
-            pady=3,
-            padx=8,
+            pady=5,
         )
-        self.btn_grammar.pack(side="left", expand=True, fill="x", padx=(2, 0))
+        self.edit_btn.pack(side="left", expand=True, fill="x", padx=(2, 0))
 
         self._cloud_mode = False
         self.cloud_btn = tk.Button(
@@ -677,18 +906,20 @@ class FlowPanel:
         self._track_focus()
         self._watch_pipeline()
 
-        global _live_cb, _grammar_cb
+        global _live_cb, _grammar_cb, _editorial_cb
         _live_cb = lambda t: self.root.after(0, lambda: self.live_var.set(t))
         _grammar_cb = self.log
+        _editorial_cb = lambda hwnd, raw, out: self.root.after(
+            0, lambda h=hwnd, r=raw, o=out: self._show_editorial(h, r, o)
+        )
 
         keyboard.hook(_on_key_event)
 
         try:
             keyboard.add_hotkey(TRIGGER_KEY, self._hotkey_fired, suppress=True)
-            self.log(
-                f"Listening. {TRIGGER_KEY} = typo commit (pipeline), "
-                f"{GRAMMAR_KEY} = grammar on buffer."
-            )
+            keyboard.add_hotkey(EDITORIAL_KEY, _editorial_hotkey, suppress=True)
+            keyboard.add_hotkey(BENCHMARK_KEY, _benchmark_hotkey, suppress=True)
+            self.log("Listening.")
         except Exception as e:
             self.log(f"Hotkey failed: {e} — run as Admin.")
 
@@ -701,8 +932,6 @@ class FlowPanel:
             lambda: threading.Thread(target=self._warmup, daemon=True).start(),
         )
 
-        self._sync_modes()
-
     def _on_close(self):
         try:
             keyboard.unhook_all()
@@ -710,42 +939,8 @@ class FlowPanel:
             pass
         self.root.destroy()
 
-    def _toggle_mode(self, mode: str):
-        if mode == "spelling":
-            self._mode_spelling = not self._mode_spelling
-            active = self._mode_spelling
-            btn = self.btn_spelling
-        elif mode == "semantic":
-            self._mode_semantic = not self._mode_semantic
-            active = self._mode_semantic
-            btn = self.btn_semantic
-        else:
-            self._mode_grammar = not self._mode_grammar
-            active = self._mode_grammar
-            btn = self.btn_grammar
-
-        if active:
-            btn.config(
-                bg="#0f2a1a",
-                fg="#22c55e",
-                text=f"✓ {mode.capitalize()}",
-            )
-        else:
-            btn.config(
-                bg="#1a1a1a",
-                fg="#555555",
-                text=f"○ {mode.capitalize()}",
-            )
-
-        self.log(f"{'ON' if active else 'OFF'} — {mode}")
-        self._sync_modes()
-
-    def _sync_modes(self):
-        set_modes(
-            spelling=self._mode_spelling,
-            semantic=self._mode_semantic,
-            grammar=self._mode_grammar,
-        )
+    def _on_editorial(self):
+        threading.Thread(target=_editorial_dispatch, daemon=True).start()
 
     def _toggle_pin(self):
         self._pinned = not self._pinned
@@ -943,6 +1138,99 @@ class FlowPanel:
         except Exception:
             pass
 
+    def _show_editorial(self, hwnd: int, raw: str, reconstructed: str):
+        """Popup: edit reconstruction, commit to field, or copy."""
+        win = tk.Toplevel(self.root)
+        win.title("Flow — Editorial")
+        win.geometry("500x420")
+        win.configure(bg="#0a0a0a")
+        win.attributes("-topmost", True)
+
+        tk.Label(
+            win,
+            text="EDITORIAL — reconstructed prose",
+            bg="#0a0a0a",
+            fg="#818cf8",
+            font=("Consolas", 11, "bold"),
+        ).pack(pady=(12, 4))
+
+        tk.Label(
+            win,
+            text="Edit below, then commit to the field or copy.",
+            bg="#0a0a0a",
+            fg="#444444",
+            font=("Consolas", 8),
+        ).pack()
+
+        box = tk.Text(
+            win,
+            height=14,
+            width=56,
+            bg="#111111",
+            fg="#818cf8",
+            font=("Consolas", 9),
+            relief="flat",
+            bd=0,
+            padx=8,
+            pady=8,
+            wrap="word",
+        )
+        box.pack(padx=12, pady=8, fill="both", expand=True)
+        box.insert("end", reconstructed)
+
+        btn_row = tk.Frame(win, bg="#0a0a0a")
+        btn_row.pack(padx=12, pady=(0, 8), fill="x")
+
+        def commit_editorial():
+            edited = box.get("1.0", "end").strip()
+            if edited and hwnd:
+                replace_text(hwnd, raw, edited)
+            win.destroy()
+
+        def copy_editorial():
+            edited = box.get("1.0", "end").strip()
+            try:
+                pyperclip.copy(edited)
+                win.title("Flow — Copied!")
+            except Exception:
+                pass
+
+        tk.Button(
+            btn_row,
+            text="✓  Commit to field",
+            command=commit_editorial,
+            bg="#1e1b4b",
+            fg="#818cf8",
+            font=("Consolas", 9, "bold"),
+            relief="flat",
+            cursor="hand2",
+            pady=6,
+        ).pack(side="left", expand=True, fill="x", padx=(0, 4))
+
+        tk.Button(
+            btn_row,
+            text="⎘  Copy",
+            command=copy_editorial,
+            bg="#1a1a1a",
+            fg="#555555",
+            font=("Consolas", 9),
+            relief="flat",
+            cursor="hand2",
+            pady=6,
+        ).pack(side="left", expand=True, fill="x", padx=(4, 0))
+
+        tk.Button(
+            win,
+            text="✕  Discard",
+            command=win.destroy,
+            bg="#1a1a1a",
+            fg="#333333",
+            font=("Consolas", 8),
+            relief="flat",
+            cursor="hand2",
+            pady=3,
+        ).pack(padx=12, pady=(0, 8), fill="x")
+
     def _hotkey_fired(self):
         target = LAST_TARGET_HND
         if not target:
@@ -966,6 +1254,132 @@ class FlowPanel:
         self.log("Cleared.")
         self.live_var.set("")
         self.pipe_var.set("idle")
+
+    def _show_benchmark_dialog(self, hwnd: int, raw: str, results: dict):
+        """Side-by-side 1.5b vs 7b spelling benchmark (F9)."""
+        _ = raw
+        fast_txt = results.get("ollama")
+        high_txt = results.get("claude")
+        ms_a = results.get("ollama_ms", "?")
+        ms_b = results.get("claude_ms", "?")
+
+        win = tk.Toplevel(self.root)
+        win.title("Benchmark")
+        win.configure(bg="#0a0a0a")
+        win.geometry("540x460")
+
+        tk.Label(
+            win,
+            text="Pick which output to commit (full field replace):",
+            bg="#0a0a0a",
+            fg="#888888",
+            font=("Consolas", 9),
+        ).pack(anchor="w", padx=12, pady=(12, 6))
+
+        tk.Label(
+            win,
+            text=f"① FAST 1.5b ({ms_a}ms):",
+            bg="#0a0a0a",
+            fg="#22c55e",
+            font=("Consolas", 8, "bold"),
+            anchor="w",
+        ).pack(fill="x", padx=12)
+        ta = tk.Text(
+            win,
+            height=6,
+            width=64,
+            bg="#111111",
+            fg="#eeeeee",
+            font=("Consolas", 9),
+            wrap="word",
+        )
+        ta.pack(fill="x", padx=12, pady=(2, 8))
+        ta.insert("1.0", fast_txt if fast_txt else "(failed)")
+        ta.config(state="disabled")
+
+        tk.Label(
+            win,
+            text=f"② HIGH  7b  ({ms_b}ms):",
+            bg="#0a0a0a",
+            fg="#f97316",
+            font=("Consolas", 8, "bold"),
+            anchor="w",
+        ).pack(fill="x", padx=12)
+        tb = tk.Text(
+            win,
+            height=6,
+            width=64,
+            bg="#111111",
+            fg="#eeeeee",
+            font=("Consolas", 9),
+            wrap="word",
+        )
+        tb.pack(fill="x", padx=12, pady=(2, 12))
+        tb.insert("1.0", high_txt if high_txt else "(failed)")
+        tb.config(state="disabled")
+
+        btn_row = tk.Frame(win, bg="#0a0a0a")
+        btn_row.pack(fill="x", padx=12, pady=(0, 8))
+
+        def pick_fast():
+            win.destroy()
+            if not fast_txt:
+                self.log("✗ Benchmark: fast model returned nothing.")
+                return
+            threading.Thread(
+                target=_benchmark_paste_full_field,
+                args=(hwnd, fast_txt),
+                daemon=True,
+            ).start()
+            self.log("✓ Committed FAST (1.5b) output.")
+
+        def pick_high():
+            win.destroy()
+            if not high_txt:
+                self.log("✗ Benchmark: high model returned nothing.")
+                return
+            threading.Thread(
+                target=_benchmark_paste_full_field,
+                args=(hwnd, high_txt),
+                daemon=True,
+            ).start()
+            self.log("✓ Committed HIGH (7b) output.")
+
+        tk.Button(
+            btn_row,
+            text="① Use Fast (1.5b)",
+            command=pick_fast,
+            bg="#14532d",
+            fg="#ffffff",
+            font=("Consolas", 9),
+            relief="flat",
+            cursor="hand2",
+            pady=6,
+        ).pack(side="left", expand=True, fill="x", padx=(0, 4))
+
+        tk.Button(
+            btn_row,
+            text="② Use High (7b)",
+            command=pick_high,
+            bg="#7c2d12",
+            fg="#ffffff",
+            font=("Consolas", 9),
+            relief="flat",
+            cursor="hand2",
+            pady=6,
+        ).pack(side="left", expand=True, fill="x", padx=(4, 0))
+
+        tk.Button(
+            win,
+            text="Cancel",
+            command=win.destroy,
+            bg="#1a1a1a",
+            fg="#555555",
+            font=("Consolas", 8),
+            relief="flat",
+            cursor="hand2",
+            pady=4,
+        ).pack(padx=12, pady=(0, 12), fill="x")
 
     def run(self):
         self.root.mainloop()

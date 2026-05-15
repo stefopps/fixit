@@ -1,17 +1,15 @@
-# FixIt v2
+# FixIt — AI Typo + Grammar Corrector
 
-Type fast and messy anywhere. Press **Ctrl+7** to fix the current line instantly.
-Runs fully offline after setup — no internet, no API keys.
+Local, offline, system-wide. Press Ctrl+7 to fix any text field instantly.
 
 ---
 
-## Setup (one time)
+## First-time setup
 
 ### 1. Ollama
-Download: https://ollama.com/download  
-Install it. It runs as a background service automatically.
+https://ollama.com/download — installs as a background service.
 
-### 2. Pull the model (once, ~1GB)
+### 2. Pull model (once, ~1GB)
 ```
 ollama pull qwen2.5:1.5b
 ```
@@ -21,15 +19,24 @@ ollama pull qwen2.5:1.5b
 pip install -r requirements.txt
 ```
 
-### 4. Smoke test (confirm everything works)
+### 4. Build medical dictionary (once)
+```
+python build_dictionary.py
+```
+Downloads ~500 medical terms + abbreviations from GitHub into memory.json.
+
+### 5. Smoke test
 ```
 python smoke_test.py
 ```
-All 6 should pass before you run FixIt.
+All 7 must pass.
 
-### 5. Run FixIt as Administrator
-Right-click your terminal → Run as Administrator
+### 6. Run
+Double-click `START_FIXIT.bat` — auto-elevates to Administrator.
+Or manually:
 ```
+# Right-click terminal → Run as Administrator
+cd C:\Users\steve\fixit
 python main.py
 ```
 
@@ -37,51 +44,54 @@ python main.py
 
 ## How to use
 
-1. Click inside any text field (Notepad, Chrome, Slack, VS Code, etc.)
-2. Type whatever you want — fast and messy is fine
+1. Click inside any text field (Notepad, Chrome, Slack, VS Code, email...)
+2. Type fast and messy
 3. Press **Ctrl+7**
-4. FixIt selects the current line, sends it to the local AI, replaces it with corrected text
-5. Watch the FixIt panel for Raw → Fixed output
+4. FixIt captures the line, fixes typos AND grammar, types it back
+5. Press **Ctrl+7** again after typing more — it only fixes the NEW part
 
-**Important:** Click in your text field first. Don't click the FixIt panel or console before triggering — that moves focus away from where you're typing.
+**Clear buffer button** — press when starting a new paragraph so FixIt
+starts fresh instead of trying to extend the previous line.
 
----
-
-## What works
-
-- Notepad ✓
-- Chrome / Edge (address bar, text boxes) ✓
-- Slack, Discord, Teams ✓
-- VS Code / Cursor ✓
-- Word, Google Docs ✓
-- Email compose ✓
+**Ctrl+Z** — undoes the correction in any app (standard undo).
 
 ---
 
-## Timing
+## How it learns
 
-- First fix after startup: ~4s (model loads into RAM)
-- All subsequent fixes: ~2s (model stays hot)
-- Ollama must be running (background service — starts with Windows after install)
+Every correction is logged to memory.json.
+After you make the same typo 2+ times, FixIt corrects it instantly
+without hitting Ollama — sub-10ms.
+
+To add your own medical terms:
+- Open memory.json in Notepad
+- Add words to the "dictionary" array
+- Save — takes effect immediately, no restart needed
+
+---
+
+## What's in memory.json
+
+```json
+{
+  "dictionary": ["endotracheal", "cricothyrotomy", ...],
+  "abbreviations": {"SpO2": "oxygen saturation", ...},
+  "patterns": {"hwo": {"fixed": "how", "count": 4}},
+  "corrections_log": [...]
+}
+```
 
 ---
 
 ## Troubleshooting
 
-**Nothing captured**
-→ You pressed Ctrl+7 while the FixIt window or console had focus
-→ Click inside Notepad (or wherever) first, then Ctrl+7
+**Nothing captured** → You pressed Ctrl+7 while FixIt panel had focus.
+Click in your text field first, then Ctrl+7.
 
-**Ctrl+C / Ctrl+V broken**
-→ Make sure you're on v2 — the old version had a global hook that broke these
-→ v2 does NOT suppress any keys
+**Ctrl+C / Ctrl+V broken** → Restart FixIt. You may have an old version running.
 
-**Hotkey not firing**
-→ Run as Administrator
+**Hotkey not working** → Must run as Administrator (use START_FIXIT.bat).
 
-**Text goes in wrong place / doubles up**
-→ Wait for "Done" before pressing Ctrl+7 again
+**Text inserted in wrong place** → Wait for "Done" before pressing Ctrl+7 again.
 
-**Model slow**
-→ Normal on CPU — first fix is ~4s, then ~2s steady
-→ Close other heavy apps to free RAM
+**Model slow first time** → Normal. ~4s first fix, ~2s after model is warm.
