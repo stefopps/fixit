@@ -1241,6 +1241,46 @@
     "beeign": {
       "fixed": "being",
       "count": 10
+    },
+    "roget": {
+      "fixed": "together",
+      "count": 10
+    },
+    "togetllike": {
+      "fixed": "together like",
+      "count": 10
+    },
+    "apourtogether": {
+      "fixed": "appear together",
+      "count": 10
+    },
+    "sspeedttesting": {
+      "fixed": "speed testing",
+      "count": 10
+    },
+    "iitsmasx": {
+      "fixed": "its max",
+      "count": 10
+    },
+    "aamazingtool": {
+      "fixed": "amazing tool",
+      "count": 10
+    },
+    "tthinka": {
+      "fixed": "think a",
+      "count": 10
+    },
+    "bbeenssign": {
+      "fixed": "being",
+      "count": 10
+    },
+    "ssom ewords": {
+      "fixed": "some words",
+      "count": 10
+    },
+    "som ewordswhen": {
+      "fixed": "some words when",
+      "count": 10
     }
   },
   "corrections_log": [
