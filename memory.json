@@ -1217,6 +1217,30 @@
     "authenication": {
       "fixed": "authentication",
       "count": 10
+    },
+    "bbeenssignbe": {
+      "fixed": "being since",
+      "count": 10
+    },
+    "hunan": {
+      "fixed": "human",
+      "count": 10
+    },
+    "humna": {
+      "fixed": "human",
+      "count": 10
+    },
+    "beeng": {
+      "fixed": "being",
+      "count": 10
+    },
+    "beign": {
+      "fixed": "being",
+      "count": 10
+    },
+    "beeign": {
+      "fixed": "being",
+      "count": 10
     }
   },
   "corrections_log": [
