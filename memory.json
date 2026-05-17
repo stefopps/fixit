@@ -7,7 +7,40 @@
     "w/o",
     "b/c"
   ],
-  "abbreviations": {},
+  "abbreviations": {
+    "SpO2": "oxygen saturation",
+    "O2": "oxygen",
+    "HR": "heart rate",
+    "BP": "blood pressure",
+    "RR": "respiratory rate",
+    "GCS": "Glasgow Coma Scale",
+    "LOC": "loss of consciousness",
+    "SOB": "shortness of breath",
+    "CP": "chest pain",
+    "AOx3": "alert and oriented times 3",
+    "ETT": "endotracheal tube",
+    "BVM": "bag valve mask",
+    "NPO": "nothing by mouth",
+    "DNR": "do not resuscitate",
+    "ALS": "advanced life support",
+    "BLS": "basic life support",
+    "EMS": "emergency medical services",
+    "ED": "emergency department",
+    "ICU": "intensive care unit",
+    "OR": "operating room",
+    "IV": "intravenous",
+    "IM": "intramuscular",
+    "Dx": "diagnosis",
+    "Tx": "treatment",
+    "Rx": "prescription",
+    "Hx": "history",
+    "Sx": "symptoms",
+    "Fx": "fracture",
+    "PMH": "past medical history",
+    "HPI": "history of present illness",
+    "CXR": "chest x-ray",
+    "EKG": "electrocardiogram"
+  },
   "patterns": {
     "ligjtwgit": {
       "fixed": "lightweight",
@@ -87,10 +120,6 @@
     },
     "wiht": {
       "fixed": "with",
-      "count": 10
-    },
-    "fo": {
-      "fixed": "of",
       "count": 10
     },
     "tpoelpe": {
@@ -209,28 +238,12 @@
       "fixed": "can",
       "count": 10
     },
-    "ot": {
-      "fixed": "to",
-      "count": 10
-    },
     "nwo": {
       "fixed": "now",
       "count": 10
     },
     "ont": {
       "fixed": "not",
-      "count": 10
-    },
-    "tis": {
-      "fixed": "its",
-      "count": 10
-    },
-    "si": {
-      "fixed": "is",
-      "count": 10
-    },
-    "od": {
-      "fixed": "do",
       "count": 10
     },
     "hte": {
@@ -917,34 +930,6 @@
       "fixed": "everything",
       "count": 10
     },
-    "oon week": {
-      "fixed": "one week",
-      "count": 10
-    },
-    "onweek": {
-      "fixed": "one week",
-      "count": 10
-    },
-    "wwouldh": {
-      "fixed": "would",
-      "count": 10
-    },
-    "dumpdm": {
-      "fixed": "dumped",
-      "count": 10
-    },
-    "todsof": {
-      "fixed": "loads of",
-      "count": 10
-    },
-    "autocorrreceveryrgin": {
-      "fixed": "autocorrect everything",
-      "count": 10
-    },
-    "sshouldbe": {
-      "fixed": "should be",
-      "count": 10
-    },
     "efrotlesly": {
       "fixed": "effortlessly",
       "count": 10
@@ -953,24 +938,8 @@
       "fixed": "effortlessly",
       "count": 10
     },
-    "llikenow": {
-      "fixed": "like now",
-      "count": 10
-    },
     "rreat": {
       "fixed": "great",
-      "count": 10
-    },
-    "tthatjsu": {
-      "fixed": "that is just",
-      "count": 10
-    },
-    "bbetato": {
-      "fixed": "better to",
-      "count": 10
-    },
-    "imimprove": {
-      "fixed": "improve",
       "count": 10
     },
     "dicitornary": {
@@ -981,8 +950,272 @@
       "fixed": "dictionary",
       "count": 10
     },
-    "ppruppetdicitonaty": {
-      "fixed": "proper dictionary",
+    "qiockly": {
+      "fixed": "quickly",
+      "count": 10
+    },
+    "nnewwworld": {
+      "fixed": "new world",
+      "count": 10
+    },
+    "aamazingand": {
+      "fixed": "amazing and",
+      "count": 10
+    },
+    "bbeachdid": {
+      "fixed": "beach did",
+      "count": 10
+    },
+    "blinuunhingeed": {
+      "fixed": "type unhinged",
+      "count": 10
+    },
+    "tttheefact": {
+      "fixed": "the fact",
+      "count": 10
+    },
+    "ttheuntil": {
+      "fixed": "the until",
+      "count": 10
+    },
+    "autocorrreceveryrgin": {
+      "fixed": "autocorrect everything",
+      "count": 10
+    },
+    "sshouldbe": {
+      "fixed": "should be",
+      "count": 10
+    },
+    "llikenow": {
+      "fixed": "like now",
+      "count": 10
+    },
+    "tthatjsu": {
+      "fixed": "that just",
+      "count": 10
+    },
+    "bbetato": {
+      "fixed": "better to",
+      "count": 10
+    },
+    "imimprove": {
+      "fixed": "improve",
+      "count": 10
+    },
+    "oonweek": {
+      "fixed": "one week",
+      "count": 10
+    },
+    "dumpdm": {
+      "fixed": "dumped",
+      "count": 10
+    },
+    "todsof": {
+      "fixed": "loads of",
+      "count": 10
+    },
+    "wwouldh": {
+      "fixed": "would have",
+      "count": 10
+    },
+    "typebudddy": {
+      "fixed": "TypeBuddy",
+      "count": 10
+    },
+    "typbiddy": {
+      "fixed": "TypeBuddy",
+      "count": 10
+    },
+    "typebiudy": {
+      "fixed": "TypeBuddy",
+      "count": 10
+    },
+    "ttypebuddy": {
+      "fixed": "TypeBuddy",
+      "count": 10
+    },
+    "ttheflow": {
+      "fixed": "the flow",
+      "count": 10
+    },
+    "floow": {
+      "fixed": "Flow",
+      "count": 10
+    },
+    "proejct": {
+      "fixed": "project",
+      "count": 10
+    },
+    "projcet": {
+      "fixed": "project",
+      "count": 10
+    },
+    "bilboards": {
+      "fixed": "billboards",
+      "count": 10
+    },
+    "bilboard": {
+      "fixed": "billboard",
+      "count": 10
+    },
+    "hosptial": {
+      "fixed": "hospital",
+      "count": 10
+    },
+    "paitent": {
+      "fixed": "patient",
+      "count": 10
+    },
+    "patinet": {
+      "fixed": "patient",
+      "count": 10
+    },
+    "medicaiton": {
+      "fixed": "medication",
+      "count": 10
+    },
+    "medicatin": {
+      "fixed": "medication",
+      "count": 10
+    },
+    "prescirption": {
+      "fixed": "prescription",
+      "count": 10
+    },
+    "diganosis": {
+      "fixed": "diagnosis",
+      "count": 10
+    },
+    "diagnosos": {
+      "fixed": "diagnosis",
+      "count": 10
+    },
+    "symtpoms": {
+      "fixed": "symptoms",
+      "count": 10
+    },
+    "symtoms": {
+      "fixed": "symptoms",
+      "count": 10
+    },
+    "emergnecy": {
+      "fixed": "emergency",
+      "count": 10
+    },
+    "emergncy": {
+      "fixed": "emergency",
+      "count": 10
+    },
+    "treatmnet": {
+      "fixed": "treatment",
+      "count": 10
+    },
+    "treament": {
+      "fixed": "treatment",
+      "count": 10
+    },
+    "surgrey": {
+      "fixed": "surgery",
+      "count": 10
+    },
+    "surgeyr": {
+      "fixed": "surgery",
+      "count": 10
+    },
+    "anestheisa": {
+      "fixed": "anesthesia",
+      "count": 10
+    },
+    "aneasthesia": {
+      "fixed": "anesthesia",
+      "count": 10
+    },
+    "raidology": {
+      "fixed": "radiology",
+      "count": 10
+    },
+    "radiolgoy": {
+      "fixed": "radiology",
+      "count": 10
+    },
+    "transcirption": {
+      "fixed": "transcription",
+      "count": 10
+    },
+    "transcritpion": {
+      "fixed": "transcription",
+      "count": 10
+    },
+    "javasrcript": {
+      "fixed": "JavaScript",
+      "count": 10
+    },
+    "javascritp": {
+      "fixed": "JavaScript",
+      "count": 10
+    },
+    "pytohn": {
+      "fixed": "Python",
+      "count": 10
+    },
+    "pyhton": {
+      "fixed": "Python",
+      "count": 10
+    },
+    "datbaase": {
+      "fixed": "database",
+      "count": 10
+    },
+    "databse": {
+      "fixed": "database",
+      "count": 10
+    },
+    "suapbase": {
+      "fixed": "Supabase",
+      "count": 10
+    },
+    "supaabse": {
+      "fixed": "Supabase",
+      "count": 10
+    },
+    "verscl": {
+      "fixed": "Vercel",
+      "count": 10
+    },
+    "vercle": {
+      "fixed": "Vercel",
+      "count": 10
+    },
+    "cluod": {
+      "fixed": "cloud",
+      "count": 10
+    },
+    "clodu": {
+      "fixed": "cloud",
+      "count": 10
+    },
+    "funtcion": {
+      "fixed": "function",
+      "count": 10
+    },
+    "funciton": {
+      "fixed": "function",
+      "count": 10
+    },
+    "implmenet": {
+      "fixed": "implement",
+      "count": 10
+    },
+    "implmeent": {
+      "fixed": "implement",
+      "count": 10
+    },
+    "authentiaction": {
+      "fixed": "authentication",
+      "count": 10
+    },
+    "authenication": {
+      "fixed": "authentication",
       "count": 10
     }
   },
