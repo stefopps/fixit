@@ -11,9 +11,9 @@ env/
 # Secrets / local config
 .env
 .env.*
+Environment.env
 
 # Flow / FixIt local data (never commit secrets or bulky caches)
-memory.json
 medical_raw.txt
 abbrev_raw.json
 *.db

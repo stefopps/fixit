@@ -1,0 +1,740 @@
+{
+  "dictionary": [
+    "sth",
+    "smth",
+    "bc",
+    "w/",
+    "w/o",
+    "b/c"
+  ],
+  "abbreviations": {},
+  "patterns": {
+    "ligjtwgit": {
+      "fixed": "lightweight",
+      "count": 10
+    },
+    "leeanifgn": {
+      "fixed": "learning",
+      "count": 10
+    },
+    "learnifgn": {
+      "fixed": "learning",
+      "count": 10
+    },
+    "tteheiphon": {
+      "fixed": "the iPhone",
+      "count": 10
+    },
+    "aalgorithm": {
+      "fixed": "algorithm",
+      "count": 10
+    },
+    "supdating": {
+      "fixed": "updating",
+      "count": 10
+    },
+    "rreplacingtt": {
+      "fixed": "replacing",
+      "count": 10
+    },
+    "mathos": {
+      "fixed": "patterns",
+      "count": 10
+    },
+    "athos": {
+      "fixed": "patterns",
+      "count": 10
+    },
+    "athcs": {
+      "fixed": "patterns",
+      "count": 10
+    },
+    "hwo": {
+      "fixed": "how",
+      "count": 10
+    },
+    "teh": {
+      "fixed": "the",
+      "count": 10
+    },
+    "thsi": {
+      "fixed": "this",
+      "count": 10
+    },
+    "adn": {
+      "fixed": "and",
+      "count": 10
+    },
+    "jsut": {
+      "fixed": "just",
+      "count": 10
+    },
+    "beacuse": {
+      "fixed": "because",
+      "count": 10
+    },
+    "becuase": {
+      "fixed": "because",
+      "count": 10
+    },
+    "waht": {
+      "fixed": "what",
+      "count": 10
+    },
+    "taht": {
+      "fixed": "that",
+      "count": 10
+    },
+    "wiht": {
+      "fixed": "with",
+      "count": 10
+    },
+    "fo": {
+      "fixed": "of",
+      "count": 10
+    },
+    "tpoelpe": {
+      "fixed": "people",
+      "count": 10
+    },
+    "peolpe": {
+      "fixed": "people",
+      "count": 10
+    },
+    "poeple": {
+      "fixed": "people",
+      "count": 10
+    },
+    "peopel": {
+      "fixed": "people",
+      "count": 10
+    },
+    "eopek": {
+      "fixed": "OpenAI",
+      "count": 10
+    },
+    "opek": {
+      "fixed": "OpenAI",
+      "count": 10
+    },
+    "opeai": {
+      "fixed": "OpenAI",
+      "count": 10
+    },
+    "rivver": {
+      "fixed": "River",
+      "count": 10
+    },
+    "eeiarlie": {
+      "fixed": "earlier",
+      "count": 10
+    },
+    "eeralie": {
+      "fixed": "earlier",
+      "count": 10
+    },
+    "eeiralie": {
+      "fixed": "earlier",
+      "count": 10
+    },
+    "amke": {
+      "fixed": "make",
+      "count": 10
+    },
+    "mkae": {
+      "fixed": "make",
+      "count": 10
+    },
+    "nad": {
+      "fixed": "and",
+      "count": 10
+    },
+    "becosm": {
+      "fixed": "because",
+      "count": 10
+    },
+    "wokring": {
+      "fixed": "working",
+      "count": 10
+    },
+    "wrking": {
+      "fixed": "working",
+      "count": 10
+    },
+    "insturct": {
+      "fixed": "instruct",
+      "count": 10
+    },
+    "tpying": {
+      "fixed": "typing",
+      "count": 10
+    },
+    "typign": {
+      "fixed": "typing",
+      "count": 10
+    },
+    "liek": {
+      "fixed": "like",
+      "count": 10
+    },
+    "liekly": {
+      "fixed": "likely",
+      "count": 10
+    },
+    "siad": {
+      "fixed": "said",
+      "count": 10
+    },
+    "whta": {
+      "fixed": "what",
+      "count": 10
+    },
+    "wokr": {
+      "fixed": "work",
+      "count": 10
+    },
+    "tiem": {
+      "fixed": "time",
+      "count": 10
+    },
+    "smoe": {
+      "fixed": "some",
+      "count": 10
+    },
+    "owrk": {
+      "fixed": "work",
+      "count": 10
+    },
+    "cna": {
+      "fixed": "can",
+      "count": 10
+    },
+    "ot": {
+      "fixed": "to",
+      "count": 10
+    },
+    "nwo": {
+      "fixed": "now",
+      "count": 10
+    },
+    "ont": {
+      "fixed": "not",
+      "count": 10
+    },
+    "tis": {
+      "fixed": "its",
+      "count": 10
+    },
+    "si": {
+      "fixed": "is",
+      "count": 10
+    },
+    "od": {
+      "fixed": "do",
+      "count": 10
+    },
+    "hte": {
+      "fixed": "the",
+      "count": 10
+    },
+    "yuo": {
+      "fixed": "you",
+      "count": 10
+    },
+    "wsa": {
+      "fixed": "was",
+      "count": 10
+    },
+    "tath": {
+      "fixed": "that",
+      "count": 10
+    },
+    "ahve": {
+      "fixed": "have",
+      "count": 10
+    },
+    "form": {
+      "fixed": "from",
+      "count": 10
+    },
+    "frmo": {
+      "fixed": "from",
+      "count": 10
+    },
+    "aobut": {
+      "fixed": "about",
+      "count": 10
+    },
+    "abotu": {
+      "fixed": "about",
+      "count": 10
+    },
+    "kwno": {
+      "fixed": "know",
+      "count": 10
+    },
+    "konw": {
+      "fixed": "know",
+      "count": 10
+    },
+    "thnk": {
+      "fixed": "think",
+      "count": 10
+    },
+    "tink": {
+      "fixed": "think",
+      "count": 10
+    },
+    "thnik": {
+      "fixed": "think",
+      "count": 10
+    },
+    "woudl": {
+      "fixed": "would",
+      "count": 10
+    },
+    "coudl": {
+      "fixed": "could",
+      "count": 10
+    },
+    "shoudl": {
+      "fixed": "should",
+      "count": 10
+    },
+    "sohuld": {
+      "fixed": "should",
+      "count": 10
+    },
+    "recieve": {
+      "fixed": "receive",
+      "count": 10
+    },
+    "beleive": {
+      "fixed": "believe",
+      "count": 10
+    },
+    "belive": {
+      "fixed": "believe",
+      "count": 10
+    },
+    "definately": {
+      "fixed": "definitely",
+      "count": 10
+    },
+    "seperate": {
+      "fixed": "separate",
+      "count": 10
+    },
+    "occured": {
+      "fixed": "occurred",
+      "count": 10
+    },
+    "untill": {
+      "fixed": "until",
+      "count": 10
+    },
+    "allready": {
+      "fixed": "already",
+      "count": 10
+    },
+    "alot": {
+      "fixed": "a lot",
+      "count": 10
+    },
+    "wich": {
+      "fixed": "which",
+      "count": 10
+    },
+    "whihc": {
+      "fixed": "which",
+      "count": 10
+    },
+    "tthe": {
+      "fixed": "the",
+      "count": 10
+    },
+    "tthis": {
+      "fixed": "this",
+      "count": 10
+    },
+    "iit": {
+      "fixed": "it",
+      "count": 10
+    },
+    "aand": {
+      "fixed": "and",
+      "count": 10
+    },
+    "wwhat": {
+      "fixed": "what",
+      "count": 10
+    },
+    "wwith": {
+      "fixed": "with",
+      "count": 10
+    },
+    "hhow": {
+      "fixed": "how",
+      "count": 10
+    },
+    "ffrom": {
+      "fixed": "from",
+      "count": 10
+    },
+    "bbut": {
+      "fixed": "but",
+      "count": 10
+    },
+    "nnow": {
+      "fixed": "now",
+      "count": 10
+    },
+    "sso": {
+      "fixed": "so",
+      "count": 10
+    },
+    "iim": {
+      "fixed": "I'm",
+      "count": 10
+    },
+    "ddo": {
+      "fixed": "do",
+      "count": 10
+    },
+    "ccan": {
+      "fixed": "can",
+      "count": 10
+    },
+    "tto": {
+      "fixed": "to",
+      "count": 10
+    },
+    "iin": {
+      "fixed": "in",
+      "count": 10
+    },
+    "wwork": {
+      "fixed": "work",
+      "count": 10
+    },
+    "ttype": {
+      "fixed": "type",
+      "count": 10
+    },
+    "ssee": {
+      "fixed": "see",
+      "count": 10
+    },
+    "kknow": {
+      "fixed": "know",
+      "count": 10
+    },
+    "ggood": {
+      "fixed": "good",
+      "count": 10
+    },
+    "rreally": {
+      "fixed": "really",
+      "count": 10
+    },
+    "llove": {
+      "fixed": "love",
+      "count": 10
+    },
+    "ffeel": {
+      "fixed": "feel",
+      "count": 10
+    },
+    "tthink": {
+      "fixed": "think",
+      "count": 10
+    },
+    "mmake": {
+      "fixed": "make",
+      "count": 10
+    },
+    "nneed": {
+      "fixed": "need",
+      "count": 10
+    },
+    "wwant": {
+      "fixed": "want",
+      "count": 10
+    },
+    "ccorrect": {
+      "fixed": "correct",
+      "count": 10
+    },
+    "ttime": {
+      "fixed": "time",
+      "count": 10
+    },
+    "rright": {
+      "fixed": "right",
+      "count": 10
+    },
+    "llook": {
+      "fixed": "look",
+      "count": 10
+    },
+    "ffind": {
+      "fixed": "find",
+      "count": 10
+    },
+    "bback": {
+      "fixed": "back",
+      "count": 10
+    },
+    "ffor": {
+      "fixed": "for",
+      "count": 10
+    },
+    "hhave": {
+      "fixed": "have",
+      "count": 10
+    },
+    "jjust": {
+      "fixed": "just",
+      "count": 10
+    },
+    "ssomething": {
+      "fixed": "something",
+      "count": 10
+    },
+    "eeven": {
+      "fixed": "even",
+      "count": 10
+    },
+    "aafter": {
+      "fixed": "after",
+      "count": 10
+    },
+    "ppressing": {
+      "fixed": "pressing",
+      "count": 10
+    },
+    "ccopy": {
+      "fixed": "copy",
+      "count": 10
+    },
+    "ppaste": {
+      "fixed": "paste",
+      "count": 10
+    },
+    "wwindow": {
+      "fixed": "window",
+      "count": 10
+    },
+    "sstill": {
+      "fixed": "still",
+      "count": 10
+    },
+    "wwhen": {
+      "fixed": "when",
+      "count": 10
+    },
+    "tthen": {
+      "fixed": "then",
+      "count": 10
+    },
+    "cclear": {
+      "fixed": "clear",
+      "count": 10
+    },
+    "bbuffer": {
+      "fixed": "buffer",
+      "count": 10
+    },
+    "ppattern": {
+      "fixed": "pattern",
+      "count": 10
+    },
+    "mmemory": {
+      "fixed": "memory",
+      "count": 10
+    },
+    "llearn": {
+      "fixed": "learn",
+      "count": 10
+    },
+    "aaccess": {
+      "fixed": "access",
+      "count": 10
+    },
+    "ssystem": {
+      "fixed": "system",
+      "count": 10
+    },
+    "mmode": {
+      "fixed": "mode",
+      "count": 10
+    },
+    "llogin": {
+      "fixed": "login",
+      "count": 10
+    },
+    "eelastic": {
+      "fixed": "elastic",
+      "count": 10
+    },
+    "cannto": {
+      "fixed": "cannot",
+      "count": 10
+    },
+    "cannt": {
+      "fixed": "cannot",
+      "count": 10
+    },
+    "caanot": {
+      "fixed": "cannot",
+      "count": 10
+    },
+    "inened": {
+      "fixed": "I need",
+      "count": 10
+    },
+    "instrucitonfro": {
+      "fixed": "instruction for",
+      "count": 10
+    },
+    "acrrat": {
+      "fixed": "accurate",
+      "count": 10
+    },
+    "crat": {
+      "fixed": "create",
+      "count": 10
+    },
+    "craet": {
+      "fixed": "create",
+      "count": 10
+    },
+    "porpmt": {
+      "fixed": "prompt",
+      "count": 10
+    },
+    "pormpt": {
+      "fixed": "prompt",
+      "count": 10
+    },
+    "propmts": {
+      "fixed": "prompts",
+      "count": 10
+    },
+    "mmeory": {
+      "fixed": "memory",
+      "count": 10
+    },
+    "bilbaord": {
+      "fixed": "billboard",
+      "count": 10
+    },
+    "billbaord": {
+      "fixed": "billboard",
+      "count": 10
+    },
+    "inteface": {
+      "fixed": "interface",
+      "count": 10
+    },
+    "itnerace": {
+      "fixed": "interface",
+      "count": 10
+    },
+    "plaffrom": {
+      "fixed": "platform",
+      "count": 10
+    },
+    "platofmr": {
+      "fixed": "platform",
+      "count": 10
+    },
+    "enbroment": {
+      "fixed": "environment",
+      "count": 10
+    },
+    "enviroment": {
+      "fixed": "environment",
+      "count": 10
+    },
+    "thi sone": {
+      "fixed": "this one",
+      "count": 10
+    },
+    "wan tto": {
+      "fixed": "want to",
+      "count": 10
+    },
+    "nee dto": {
+      "fixed": "need to",
+      "count": 10
+    },
+    "hav ea": {
+      "fixed": "have a",
+      "count": 10
+    },
+    "extarct": {
+      "fixed": "extract",
+      "count": 10
+    },
+    "decriptian": {
+      "fixed": "description",
+      "count": 10
+    },
+    "photograhpy": {
+      "fixed": "photography",
+      "count": 10
+    },
+    "geneat": {
+      "fixed": "generate",
+      "count": 10
+    },
+    "natrual": {
+      "fixed": "natural",
+      "count": 10
+    },
+    "evrytgin": {
+      "fixed": "everything",
+      "count": 10
+    },
+    "everytin": {
+      "fixed": "everything",
+      "count": 10
+    },
+    "tpoic": {
+      "fixed": "topic",
+      "count": 10
+    },
+    "msut": {
+      "fixed": "must",
+      "count": 10
+    },
+    "curos": {
+      "fixed": "Cursor",
+      "count": 10
+    },
+    "currsor": {
+      "fixed": "Cursor",
+      "count": 10
+    },
+    "creat": {
+      "fixed": "create",
+      "count": 10
+    },
+    "creaet": {
+      "fixed": "create",
+      "count": 10
+    },
+    "taks": {
+      "fixed": "tasks",
+      "count": 10
+    }
+  },
+  "corrections_log": [
+    {
+      "raw": "it is it sometimes beneficial or going to work again t su . what is this does it even respec amanul mode. let it Take the change to work in the bg before I break. emulate mode sometime the time i press it is fixed all my It's basically a pick-up tool, or clean. up toolaxz8",
+      "fixed": "It is sometimes beneficial or going to work again. What does this do? Does it even respect amanul mode? Let it take the change to work in the background before I break. Emulate mode; sometime, when I press it, everything is fixed all my way. It's basically a pick-up tool, or cleanup tool."
+    }
+  ],
+  "word_list": []
+}
