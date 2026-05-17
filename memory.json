@@ -896,6 +896,94 @@
     "quickyl": {
       "fixed": "quickly",
       "count": 10
+    },
+    "ereducudnact": {
+      "fixed": "redundant",
+      "count": 10
+    },
+    "redudnact": {
+      "fixed": "redundant",
+      "count": 10
+    },
+    "redundact": {
+      "fixed": "redundant",
+      "count": 10
+    },
+    "everyrgin": {
+      "fixed": "everything",
+      "count": 10
+    },
+    "everytgin": {
+      "fixed": "everything",
+      "count": 10
+    },
+    "oon week": {
+      "fixed": "one week",
+      "count": 10
+    },
+    "onweek": {
+      "fixed": "one week",
+      "count": 10
+    },
+    "wwouldh": {
+      "fixed": "would",
+      "count": 10
+    },
+    "dumpdm": {
+      "fixed": "dumped",
+      "count": 10
+    },
+    "todsof": {
+      "fixed": "loads of",
+      "count": 10
+    },
+    "autocorrreceveryrgin": {
+      "fixed": "autocorrect everything",
+      "count": 10
+    },
+    "sshouldbe": {
+      "fixed": "should be",
+      "count": 10
+    },
+    "efrotlesly": {
+      "fixed": "effortlessly",
+      "count": 10
+    },
+    "effrotlesly": {
+      "fixed": "effortlessly",
+      "count": 10
+    },
+    "llikenow": {
+      "fixed": "like now",
+      "count": 10
+    },
+    "rreat": {
+      "fixed": "great",
+      "count": 10
+    },
+    "tthatjsu": {
+      "fixed": "that is just",
+      "count": 10
+    },
+    "bbetato": {
+      "fixed": "better to",
+      "count": 10
+    },
+    "imimprove": {
+      "fixed": "improve",
+      "count": 10
+    },
+    "dicitornary": {
+      "fixed": "dictionary",
+      "count": 10
+    },
+    "dicitorny": {
+      "fixed": "dictionary",
+      "count": 10
+    },
+    "ppruppetdicitonaty": {
+      "fixed": "proper dictionary",
+      "count": 10
     }
   },
   "corrections_log": [
