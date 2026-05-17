@@ -872,6 +872,30 @@
     "tirn": {
       "fixed": "turn",
       "count": 10
+    },
+    "bell aiac": {
+      "fixed": "Bel-Air",
+      "count": 10
+    },
+    "bellair": {
+      "fixed": "Bel-Air",
+      "count": 10
+    },
+    "ppriccesof": {
+      "fixed": "piece of",
+      "count": 10
+    },
+    "qiockyl": {
+      "fixed": "quickly",
+      "count": 10
+    },
+    "qiuckly": {
+      "fixed": "quickly",
+      "count": 10
+    },
+    "quickyl": {
+      "fixed": "quickly",
+      "count": 10
     }
   },
   "corrections_log": [
