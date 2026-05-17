@@ -728,6 +728,150 @@
     "taks": {
       "fixed": "tasks",
       "count": 10
+    },
+    "sporject": {
+      "fixed": "project",
+      "count": 10
+    },
+    "flwo": {
+      "fixed": "flow",
+      "count": 10
+    },
+    "availb": {
+      "fixed": "available",
+      "count": 10
+    },
+    "ipgoen": {
+      "fixed": "iPhone",
+      "count": 10
+    },
+    "tha ton": {
+      "fixed": "that on",
+      "count": 10
+    },
+    "predicant": {
+      "fixed": "prediction",
+      "count": 10
+    },
+    "reatining": {
+      "fixed": "retaining",
+      "count": 10
+    },
+    "chinks": {
+      "fixed": "chunks",
+      "count": 10
+    },
+    "ecostytem": {
+      "fixed": "ecosystem",
+      "count": 10
+    },
+    "thi sidea": {
+      "fixed": "this idea",
+      "count": 10
+    },
+    "throguh": {
+      "fixed": "through",
+      "count": 10
+    },
+    "entertainemnt": {
+      "fixed": "entertainment",
+      "count": 10
+    },
+    "edorecto": {
+      "fixed": "director",
+      "count": 10
+    },
+    "crat e": {
+      "fixed": "create",
+      "count": 10
+    },
+    "swabillboaeds": {
+      "fixed": "SAW Billboards",
+      "count": 10
+    },
+    "thi sporject": {
+      "fixed": "this project",
+      "count": 10
+    },
+    "hekc": {
+      "fixed": "check",
+      "count": 10
+    },
+    "chekc": {
+      "fixed": "check",
+      "count": 10
+    },
+    "repo sthat": {
+      "fixed": "repos that",
+      "count": 10
+    },
+    "hav acheive": {
+      "fixed": "have achieved",
+      "count": 10
+    },
+    "deasy": {
+      "fixed": "easy",
+      "count": 10
+    },
+    "predictant": {
+      "fixed": "prediction",
+      "count": 10
+    },
+    "correc titon": {
+      "fixed": "correction",
+      "count": 10
+    },
+    "inneed": {
+      "fixed": "I need",
+      "count": 10
+    },
+    "giv eme": {
+      "fixed": "give me",
+      "count": 10
+    },
+    "th eprpomt": {
+      "fixed": "the prompt",
+      "count": 10
+    },
+    "th ebg": {
+      "fixed": "the background",
+      "count": 10
+    },
+    "th epen": {
+      "fixed": "the pen",
+      "count": 10
+    },
+    "desibe": {
+      "fixed": "describe",
+      "count": 10
+    },
+    "bsed": {
+      "fixed": "based",
+      "count": 10
+    },
+    "th ecamer": {
+      "fixed": "the camera",
+      "count": 10
+    },
+    "carat": {
+      "fixed": "create",
+      "count": 10
+    },
+    "mmb": {
+      "fixed": "people",
+      "count": 10
+    },
+    "peole": {
+      "fixed": "people",
+      "count": 10
+    },
+    "secodn": {
+      "fixed": "second",
+      "count": 10
+    },
+    "tirn": {
+      "fixed": "turn",
+      "count": 10
     }
   },
   "corrections_log": [
